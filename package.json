@@ -1,0 +1,35 @@
+{
+  "name": "data-management-contract",
+  "version": "1.0.0",
+  "description": "storing & retrievel a CID from IPFS for FEVM smart contract and dApp to consume",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/longfeiWan9/data-management-contract.git"
+  },
+  "keywords": [
+    "IPFS",
+    "Filecoin",
+    "FVM"
+  ],
+  "author": "longfei",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/longfeiWan9/data-management-contract/issues"
+  },
+  "homepage": "https://github.com/longfeiWan9/data-management-contract#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.1",
+    "install": "^0.13.0",
+    "npm": "^10.2.4"
+  },
+  "dependencies": {
+    "cids": "^1.1.9",
+    "dotenv": "^16.3.1"
+  }
+}
