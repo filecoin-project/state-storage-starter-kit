@@ -14,14 +14,14 @@ async function main() {
     const dmContract = factory.attach(DataManagementContract);
 
     const cid = 'bafkreickvqlzvxbd7xwxsi6ntudleblwg7id7yw2tux3zvnh5nmuop3lja';
-    const tx = await dmContract.requestBlobLoad(cidToBytes(cid), ethers.parseUnits("0"), ethers.parseUnits("10"));
+    const tx = await dmContract.requestBlobLoad(cidToBytes(cid), ethers.parseUnits("1"), ethers.parseUnits("1"));
     console.log(tx.hash);
-    const receipt = await tx.wait()
+    const receipt = await tx.wait();
+    console.log("requestBlobLoad transaction is confirmed on Chain.");
     for (const event of receipt.events) {
       console.log(`Event ${event.event} with args ${event.args}`);
     }
-}
-
+  }
 function cidToBytes(cid){
     const cidHexRaw = new CID(cid).toString('base16').substring(1)
     const cidHex = "0x00" + cidHexRaw

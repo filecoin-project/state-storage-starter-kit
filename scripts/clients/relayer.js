@@ -1,34 +1,47 @@
 const { ethers } = require("hardhat")
 const axios = require('axios')
 require('dotenv').config()
+const WalletPK = process.env.PRIVATE_KEY;
 const DataManagementContract = process.env.DMC_ADDR;
 
-async function relayer() {
-    //Get a wss provider
-    const provider = new ethers.WebSocketProvider(
-      `wss://wss.calibration.node.glif.io/apigw/lotus/rpc/v1`
-    );
-    const factory = await ethers.getContractFactory("DataManagement", provider);
-    const dmContract = factory.attach(DataManagementContract);
+//Get a wss provider
+const provider = new ethers.WebSocketProvider(
+  `wss://wss.calibration.node.glif.io/apigw/lotus/rpc/v1`);
 
-    dmContract.on("BlobLoadReq", async (correlationId, cid, reward, timeout)=>{
+//create the contract instance
+const wallet = new ethers.Wallet(WalletPK, provider);
+
+async function relayer() {
+    const factory = await ethers.getContractFactory("DataManagement", wallet);
+    const dmContract = factory.attach(DataManagementContract);
+    dmContract.once("BlobLoadReq", async (correlationId, cid, reward, timeout)=>{
         let evenInfo = {
           correlationId: Number(correlationId),
           cid: cid,
           reward: ethers.formatUnits(reward),
           timeout: ethers.formatUnits(timeout)
         };
-        console.log(JSON.stringify(evenInfo, null, 4));
+        console.log("Event log:", JSON.stringify(evenInfo, null, 4));
+        const reqStatus = await dmContract.requestStatus(evenInfo.correlationId);
 
-        const ipfsURL = "https://ipfs.io/ipfs/f" + cid.substring(4);;
-        console.log(ipfsURL);
-        res = await axios.get(ipfsURL);
-        console.log(res.data);
+        //Process the retrieve request if it is still pending
+        if(reqStatus ==1){
+          const ipfsURL = "https://ipfs.io/ipfs/f" + cid.substring(4);;
+          //TODO: use kubo to get data.
+          res = await axios.get(ipfsURL);
+          console.log("Data from IPFS:", res.data);
 
-        //convert Json object to bytes
-        const jsonString = JSON.stringify(res.data);
-        const hexString = uint8ArrayToHex(Buffer.from(jsonString));
-        console.log('HexString:', hexString);
+          //convert Json object to bytes for calling develerBlob
+          const jsonString = JSON.stringify(res.data);
+          const payloadHex = "0x" + uint8ArrayToHex(Buffer.from(jsonString));
+          console.log('payloadHex:', payloadHex);
+
+          //call smart contract to send payload data
+          const tx = await dmContract.deliverBlob(correlationId, payloadHex);
+          console.log();
+          console.log(tx.hash, " is confirmed on Chain.");
+        }
+        
     })
 }
 

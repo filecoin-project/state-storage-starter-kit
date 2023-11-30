@@ -12,7 +12,7 @@ interface BlobLoader {
 
 contract DataManagement is BlobLoader{
     uint256 private _correlationId;
-    mapping(uint256 => bytes) public requestedCid;
+    mapping(uint256 => bytes) public requestedCid; // correlationId <-> cid
     mapping(uint256 => RequestStatus) public requestStatus; // correlationId <-> requestStatus
     mapping(uint256 => bytes) public dataStore; // correlationId <-> dataStore
 
@@ -23,6 +23,7 @@ contract DataManagement is BlobLoader{
     event BlobLoadReq(uint256 correlationId, bytes cid, uint256 reward, uint64 timeout);
     event BlobLoadRes(uint256 correlationId, Result result);
     event DataRetrieved(uint256 correlationId, bytes cid);
+    event IsCIDMatch(bool IsCIDMatch);
         
     /**
      * To request data from IPFS.
@@ -30,6 +31,7 @@ contract DataManagement is BlobLoader{
      * Client send a request to retrieval data from IPFS.
      */ 
     function requestBlobLoad(bytes memory cid, uint256 reward, uint64 timeout) external {
+        //require(cid.length == 32, "Invalid CID length");
         _correlationId +=1;
         requestedCid[_correlationId] = cid;
         requestStatus[_correlationId] = RequestStatus.Pending;
@@ -72,13 +74,19 @@ contract DataManagement is BlobLoader{
      * Check if received payload matches requested CID.
      * assume the payload is single IPLD blob under 256 kb.
      */
-    function _checkCidMatch(bytes memory payload, bytes memory cid)internal returns (bool){
-        //Calculate payload multihash with sha256()
-
-        //Abstract multilHash from cid
-
-        //Compare 
-        return true;
+    function _checkCidMatch(bytes memory payload, bytes memory cid) internal returns (bool) {
+        // For singble IPLD blob, using shar256 to get its multiHash
+        bytes memory payloadMultiHash = abi.encodePacked(sha256(payload));
+        
+        // cid multihash extraction: last 32 bytes of cid.
+        bytes memory cidMultiHash = new bytes(32);
+        for (uint256 i = cid.length - 32; i < cid.length; i++) {
+            cidMultiHash[i - (cid.length - 32)] = cid[i];
+        }
+        
+        // compare payloadMultiHash & cidMultiHash
+        bool areEqual = payloadMultiHash.length == cidMultiHash.length && keccak256(payloadMultiHash) == keccak256(cidMultiHash);
+        emit IsCIDMatch(areEqual);
+        return areEqual;
     }
 }
-
