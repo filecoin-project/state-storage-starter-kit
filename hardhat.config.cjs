@@ -1,4 +1,5 @@
 require("@nomicfoundation/hardhat-toolbox");
+require("@nomicfoundation/hardhat-ethers");
 require('dotenv').config();
 const WalletPK = process.env.PRIVATE_KEY;
 

@@ -1,9 +1,11 @@
-const { ethers } = require("hardhat")
-const axios = require('axios')
-require('dotenv').config()
+import hre from 'hardhat';
+import CID from "cids";
+import "dotenv/config";
+
 const WalletPK = process.env.PRIVATE_KEY;
 const DataManagementContract = process.env.DMC_ADDR;
-const correlationId = 8;
+const correlationId = 3;
+let ethers = hre.ethers;
 
 async function sendData() {
     //create the contract instance
@@ -14,13 +16,18 @@ async function sendData() {
     const status = await dmContract.requestStatus(correlationId);
     console.log("Request status: ", Number(status));
 
-    const cid = await dmContract.requestedCid(correlationId);
-    console.log("Requested CID: ",cid);
+    const cidHex = await dmContract.requestedCid(correlationId);
+    console.log("Requested CID: ",cidHextoCid(cidHex));
 
     if(status == 2){
       const payload = await dmContract.dataStore(correlationId);
-      console.log(payload);
+      console.log("payloadHex:", payload);
     }
+}
+
+function cidHextoCid(cidHex){
+  const cidHex2 = 'f' + cidHex.substring(4);
+  return new CID(cidHex2).toString('base32');
 }
 
 sendData();

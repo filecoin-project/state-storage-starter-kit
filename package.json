@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "storing & retrievel a CID from IPFS for FEVM smart contract and dApp to consume",
   "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "cids": "^1.1.9",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "kubo-rpc-client": "^3.0.2"
   }
 }

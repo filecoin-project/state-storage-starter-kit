@@ -31,7 +31,6 @@ contract DataManagement is BlobLoader{
      * Client send a request to retrieval data from IPFS.
      */ 
     function requestBlobLoad(bytes memory cid, uint256 reward, uint64 timeout) external {
-        //require(cid.length == 32, "Invalid CID length");
         _correlationId +=1;
         requestedCid[_correlationId] = cid;
         requestStatus[_correlationId] = RequestStatus.Pending;
@@ -46,7 +45,7 @@ contract DataManagement is BlobLoader{
     function deliverBlob(uint256 correlationId, bytes memory payload) external {
         require(requestStatus[correlationId] == RequestStatus.Pending, "Request not pending");
         bytes memory cid = requestedCid[correlationId];
-        // Additional check for CID match (some pseudo-code here could look like)
+        // Additional check for CID match
         require(_checkCidMatch(payload, cid), "CID mismatch");
 
         dataStore[correlationId] = payload;

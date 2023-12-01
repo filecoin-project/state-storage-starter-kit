@@ -1,4 +1,4 @@
-require('dotenv').config();
+import "dotenv/config";
 const WalletPK = process.env.PRIVATE_KEY;
 
 async function main() {
