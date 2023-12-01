@@ -2,9 +2,10 @@ import hre from "hardhat";
 import CID from "cids";
 import "dotenv/config";
 
+let ethers = hre.ethers;
 const WalletPK = process.env.PRIVATE_KEY;
 const DataManagementContract = process.env.DMC_ADDR;
-let ethers = hre.ethers;
+const cid = '<replace the CID you want to retrive from IPFS>';
 
 async function main() {
     //Get signer information
@@ -14,8 +15,6 @@ async function main() {
 
     const factory = await ethers.getContractFactory("DataManagement", wallet);
     const dmContract = factory.attach(DataManagementContract);
-
-    const cid = 'bafkreickvqlzvxbd7xwxsi6ntudleblwg7id7yw2tux3zvnh5nmuop3lja';
     const tx = await dmContract.requestBlobLoad(
                 cidToBytes(cid), 
                 ethers.parseUnits("1"), 

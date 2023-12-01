@@ -9,7 +9,6 @@ let ethers = hre.ethers;
 const WalletPK = process.env.PRIVATE_KEY;
 const DataManagementContract = process.env.DMC_ADDR;
 
-
 // connect to the default API address http://localhost:5001
 const client = create();
 

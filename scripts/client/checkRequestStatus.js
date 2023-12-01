@@ -1,11 +1,10 @@
 import hre from 'hardhat';
 import CID from "cids";
 import "dotenv/config";
-
+let ethers = hre.ethers;
 const WalletPK = process.env.PRIVATE_KEY;
 const DataManagementContract = process.env.DMC_ADDR;
-const correlationId = 3;
-let ethers = hre.ethers;
+const correlationId = <replace-this-with-your-correlationId>;
 
 async function sendData() {
     //create the contract instance
