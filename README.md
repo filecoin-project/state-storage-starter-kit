@@ -60,7 +60,7 @@ To get started with the project, follow these steps:
    cd data-management-contract
    npm install
    ```
-   Create an `.evn` file in the project so you can add your wallet key and contract address in there for this project to use.  Make sure you have enough tFIL in your wallet for testing.
+   Create an `.env` file in the project so you can add your wallet key and contract address in there for this project to use.  Make sure you have enough tFIL in your wallet for testing.
    ```shell
    PRIVATE_KEY=<your-wallet-key>
    DMC_ADDR=<your-dataManagementContract-address>

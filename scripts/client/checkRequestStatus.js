@@ -5,6 +5,7 @@ let ethers = hre.ethers;
 const WalletPK = process.env.PRIVATE_KEY;
 const DataManagementContract = process.env.DMC_ADDR;
 const correlationId = <replace-this-with-your-correlationId>;
+//const correlationId = 3;
 
 async function sendData() {
     //create the contract instance

@@ -64,6 +64,7 @@ contract DataManagement is BlobLoader{
         bytes memory dataPayload = dataStore[correlationId];
         bytes memory cid = requestedCid[correlationId];
         emit DataRetrieved(correlationId, cid);
+        //TODO: send the payload to client's smart contract by delegateCall or resume certain operation.
 
         delete dataStore[correlationId];
         return dataPayload;
