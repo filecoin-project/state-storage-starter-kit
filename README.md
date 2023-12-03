@@ -43,8 +43,10 @@ The repository is organized as follows:
 - `test/`: This directory contains test files for the contracts. 
 
 ## Getting Started
-> **Note**
+> **Note:**
 > Before getting started, we are going to need a local IPFS node to serve content. Make sure you install a [IPFS Desktop App](https://docs.ipfs.tech/install/ipfs-desktop/) in your local computer.
+
+> You can also try to retrieve data through a public IPFS gateway using any generic http request client.
 
 To get started with the project, follow these steps:
 
@@ -91,7 +93,7 @@ To get started with the project, follow these steps:
 
 5. Simulate client to send a request to load a NFT metadata json file from IPFS.
 
-   > **Note**
+   > **Note:**
    > In this PoC, we only consider processing the request to retrieve small data from IPFS, such as a metaData.json.
 
    You need to add your CID in the `scripts/client/sendRequest.js` . 
