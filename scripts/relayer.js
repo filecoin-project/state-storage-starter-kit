@@ -30,20 +30,31 @@ async function relayer() {
           timeout: ethers.formatUnits(timeout)
         };
         console.log("Event log:", JSON.stringify(evenInfo, null, 4));
-        
         const reqStatus = await dmContract.requestStatus(evenInfo.correlationId);
+
+        // Get CID codec to determine what data it represents
+        let cidInstance = new CID(cidHextoCid(cidHex));
+        const cidCodec = cidInstance.toJSON().codec;
+
         //Process the retrieve request when it is still pending
         if(reqStatus == 1){
           const data = uint8ArrayConcat(await all(client.cat(evenInfo.cid)));
 
-          //convert data to bytes for calling develerBlob
-          const payloadHex = "0x" + uint8ArrayToHex(data);
-          console.log('payloadHex:', payloadHex);
+          if(cidCodec == 'raw'){
+            //convert data to bytes for calling develerBlob
+            const payloadHex = "0x" + uint8ArrayToHex(data);
+            console.log('payloadHex:', payloadHex);
 
-          //call smart contract to send payload data
-          const tx = await dmContract.deliverBlob(correlationId, payloadHex);
-          await tx.wait();
-          console.log(tx.hash, " is confirmed on Chain.");
+            //call smart contract to send payload data
+            const tx = await dmContract.deliverBlob(correlationId, payloadHex);
+            await tx.wait();
+            console.log(tx.hash, " is confirmed on Chain.");
+          }
+          else if(cidCodec == 'dag-pb'){
+            console.log("this is a fs. still working in progress.");
+            // the CID match will failed by only sha256(payloadHex)
+            // TODO: need to figure out how to verify CID again content.
+          }
         }
         
     })

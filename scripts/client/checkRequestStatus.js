@@ -4,16 +4,17 @@ import "dotenv/config";
 let ethers = hre.ethers;
 const WalletPK = process.env.PRIVATE_KEY;
 const DataManagementContract = process.env.DMC_ADDR;
-const correlationId = <replace-this-with-your-correlationId>;
-//const correlationId = 3;
+// const correlationId = <replace-this-with-your-correlationId>;
+const correlationId = 17;
 
-async function sendData() {
+async function checkStatus() {
     //create the contract instance
     const wallet = new ethers.Wallet(WalletPK, ethers.provider);
     const factory = await ethers.getContractFactory("DataManagement", wallet);
     const dmContract = factory.attach(DataManagementContract);
 
     const status = await dmContract.requestStatus(correlationId);
+    console.log("correlationId: ", correlationId);
     console.log("Request status: ", Number(status));
 
     const cidHex = await dmContract.requestedCid(correlationId);
@@ -30,4 +31,9 @@ function cidHextoCid(cidHex){
   return new CID(cidHex2).toString('base32');
 }
 
-sendData();
+checkStatus()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+});
