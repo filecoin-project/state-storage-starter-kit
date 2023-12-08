@@ -69,12 +69,6 @@ To get started with the project, follow these steps:
 
 3. Deploy the Data Management Contract
 
-   You can also test the contract  to verify the functionality of the contracts before deploying it
-
-   ```
-   npx hardhat test
-   ```
-
    Let's deploy the data management contract to the Filecoin calibration network.
 
    ```
