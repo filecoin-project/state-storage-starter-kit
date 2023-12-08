@@ -53,13 +53,13 @@ To get started with the project, follow these steps:
 1. Clone the repository
 
    ```shell
-   git clone https://github.com/longfeiWan9/data-management-contract.git
+   git clone https://github.com/filecoin-project/state-storage-starter-kit.git
    ```
 
 2. Install the project dependencies
 
    ```shell
-   cd data-management-contract
+   cd state-storage-starter-kit
    npm install
    ```
    Create a `.env` file in the project so you can add your wallet key and contract address in there for this project to use.  Make sure you have enough tFIL in your wallet for testing.
