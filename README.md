@@ -1,6 +1,6 @@
 # State/Storage Integration PoC
 
-Before diving into coding, it is essential to take a few minutes to understand the concept and design behind this Proof of Concept (PoC) by reviewing the provided [specification](https://www.notion.so/pl-strflt/State-Storage-Integration-PoC-For-EthIndia-ced01e085c0d49369c086b21e8017f1b).
+Before diving into coding, it is essential to take a few minutes to understand the concept and design behind this Proof of Concept (PoC) by reviewing the provided [specification](https://www.notion.so/State-Storage-Integration-with-Filecoin-Virtual-Machine-IPFS-263f8e13509a44ce8b2e627fe0391a9e).
 
 **Key Components**:
 
